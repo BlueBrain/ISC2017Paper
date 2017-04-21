@@ -76,7 +76,6 @@ High-Performance Visualization at Blue Brain}
 
 
 \begin{abstract}
-
   The Blue Brain project has been investing in high-performance visualization
   (HPV) to complement its HPC strategy since its inception in 2007. In 2011,
   this strategy has been accelerated to develop innovative visualization
@@ -90,10 +89,9 @@ High-Performance Visualization at Blue Brain}
   integration with high-fidelity displays, but also to build service oriented
   architectures, to link into web applications and to provide remote services to
   python applications.
-
 \end{abstract}
 
-\section{Collaborative Display Systems}
+\section{Collaborative Displays}
 
 Collaborative display systems are the integration point of the Blue Brain
 visualization infrastructure. They are the evolution of existing visualization
@@ -118,7 +116,7 @@ a hundred people). \fig{fTDW} shows one wall during a project-wide presentation
 with multiple interactive applications.
 
 \begin{figure}[h!t]
-  \includegraphics[width=\textwidth]{images/tdw}
+  \includegraphics[width=\columnwidth]{images/tdw}
   \caption{\label{fTDW}Blue Brain $4\times 3$ tiled display wall}
 \end{figure}
 
@@ -146,7 +144,7 @@ projection system fills in the floor area. OpenDeck will allow us to run our
 applications based on Equalizer~\cite{EMP:09} once the system is installed.
 
 \begin{figure}[h!t]
-  \includegraphics[width=\textwidth]{images/opendeck}
+  \includegraphics[width=\columnwidth]{images/opendeck}
   \caption{\label{fOpenDeck}OpenDeck concept rendering}
 \end{figure}
 
@@ -172,7 +170,7 @@ any web browser. \fig{fTDW} shows Tide on a $4\times 3$ display wall and
 \fig{fTideWeb} shows the Tide web interface in a browser.
 
 \begin{figure}[h!t]
-  \includegraphics[width=\textwidth]{images/tideweb}
+  \includegraphics[width=\columnwidth]{images/tideweb}
   \caption{\label{fTideWeb}Tide web interface}
 \end{figure}
 
@@ -199,7 +197,119 @@ other machines onto a wall window and allows interaction with the remote
 desktop. Other rendering applications, such as our interactive raytracing
 engine Brayns~\cite{brayns} are easily integrated with Deflect and Tide.
 
-\section{Messaging/Services}
+\section{C++ Messaging and Services}
+
+All Blue Brain applications integrate a messaging framework which allows them
+to be used as services in a variety of use cases. For example, the Tide web
+server providing the user interface shown in \fig{fTideWeb}, is based on this
+messaging solution. Other use cases are remote python APIs, JavaScript user
+interfaces and service architectures combining multiple visualization
+applications with data providers such as HPC simulations.
+
+The base communication layer ZeroEQ utilizes ZeroMQ as the transport layer, the
+ZeroConf protocol for discovery, and our novel ZeroBuf serialization library for
+high-performance messaging. A fully integrated HTTP server provides a bridge to
+JavaScript, Python and similar environments by implementing REST APIs with JSON
+payload. \fig{fUML} shows a class diagram of our messaging solution.
+
+\begin{figure*}[ht]\center
+  \includegraphics[width=\columnwidth]{images/ZeroMS}
+  \caption{\label{fUML}UML Diagram of the main messaging classes}
+\end{figure*}
+
+
+\subsection{ZeroEQ}
+
+ZeroEQ is the base messaging library, wrapping up existing technologies into an
+API which is convenient to use and easy to integrate into C++ code. It provides
+two messaging services: publish-subscribe and HTTP. For binary and JSON
+encodings it relies on a simple \textsf{Serializable} interface, for which
+ZeroBuf provides a sample implementation. To facilitate the simple use case of
+linking a few applications, ZeroEQ uses the zeroconf protocol to discover and
+connect to related applications. For more complex scenarios, explicit
+connections are supported.
+
+\subsubsection{Publish-Subscribe}
+
+The publish-subscribe service is implemented in a \textsf{Publisher} and
+\textsf{Subscriber} class. It provides event-based messaging, based on a 128-bit
+message type with arbitrary payload. The message type is used for message
+subscription, filtering and routing. The payload is expected to be uniquely
+identified by the message type, that is, all applications agree for the decoding
+and semantics of any given message type. The ZeroBuf section outlines how this
+is implemented. The underlying transport uses ZeroMQ pub-sub sockets.
+
+The pub-sub service is stateless, that is, applications have no expectation of
+when messages are received or who receives published messages. This
+communication pattern naturally leads to robust services, since there is no
+possiblity for deadlocks or undefined behaviour. The pub-sub API is provided in
+two flavors: a simple $pointer \& size$ memory buffer, and a higher level
+object-based abstraction. The object-based API is syntactic sugar for the
+low-level API, and allows automatic publish and update of objects with a few
+lines of code. It uses the \textsf{toBinary()} and \textsf{fromBinary()} methods
+of the \textsf{Serializable} interface to call the low-level API.
+
+\begin{lstlisting}[float, caption=Publish-Subscribe Example, label=lPubSub]
+zerobuf::render::Camera camera;
+zeroeq::Publisher publisher;
+zeroeq::Subscriber subscriber;
+
+subscriber.subscribe( camera );
+
+while( rendering )
+{
+    subscriber.receive( 0 /*ms, poll*/ );
+    updateCamera( camera );
+    publisher.publish( camera );
+    renderFrame( camera );
+}
+\end{lstlisting}
+
+The example in \lref{lPubSub} shows the integration of camera
+synchronization in a visualization application. This example relies on the
+builtin zeroconf protocol to connect application instances. Subscribers only
+subscribe to events from publishers within the same session. The default
+session name is the user name, and can be customized using an environment
+variable or non-default constructor. Similarly, the subscriber can subscribe by
+session or address. \lref{lPubSubExp} illustrates an explicitly addressed
+subscription. Notice that the subscriber uses the publisher URI, which will
+contain the concrete port chosen for the publisher.
+
+\begin{lstlisting}[float, caption=Explicit Addressing,label=lPubSubExp]
+zeroeq::URI uri( "tcp://localhost" );
+zeroeq::Publisher publisher( uri, zeroeq::NULL_SESSION ); // deactivate zeroconf
+zeroeq::Subscriber subscriber( publisher.getURI( )); // use concrete port
+\end{lstlisting}
+
+Subscribers are derived from a \textsf(Receiver) base class, which is shared
+with the http server. All receivers can share their \textsf{receive()}
+operation at construction time, that is, the blocking receive operation applies
+to all receivers in the shared group. \lref{lSubShare} shows an example of
+selectively receiving different updates on different input sockets.
+
+\begin{lstlisting}[float,caption=Subscriber Sharing, label=lSubShare]
+zeroeq::Subscriber local( zeroeq::URI( "localhost:29387" ));
+zeroeq::Subscriber global( local );
+
+local.subscribe( colorMap );
+global.subscribe( camera );
+
+while( true )
+    local.receive(); // updates colorMap and camera
+\end{lstlisting}
+
+\subsubsection{HTTP Server}
+
+The http server is built using cppnetlib \cite{cppnetlib} for the transport and
+http protocol handling. It supports all standard http verbs (GET, POST, PUT,
+PATCH, DELETE). It is a \textsf{zeroeq::Receiver}, that is, it can share its
+\textsf{receive()} update operation with other subscribers and http servers.
+Unlike a subscriber, the http server follows the HTTP request-reply semantics,
+that is, a request received by a server has to be followed directly by its
+reply. future
+
+
+vocabulary
 
 \section{Rendering Applications}
 \subsection{Interactive Raytracing}
