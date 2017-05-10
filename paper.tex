@@ -68,7 +68,7 @@ High-Performance Visualization at Blue Brain}
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
 
 %% Author and Affiliation (multiple authors with multiple affiliations)
-\author{Stefan~Eilemann, et.al.}
+\author{Stefan~Eilemann, et.al.\thanks{\textit{firstname.lastname}@epfl.ch}}
 \institute{Blue Brain Project, Ecole Polytechnique Federale de Lausanne}
 
 % make the title area
@@ -380,7 +380,9 @@ scalability with respect to the data set size ($O(\log{N})$ vs $O(n)$).
 Furthermore, CPU-based raytracing allows the rendering of larger data sets
 without any level-of-detail algorithms due to the larger memory size. Last, but
 not least, advanced rendering algorithms such as shadowing, reflections and
-global illuminations are significantly easier to implement in a raytracer.
+global illuminations are significantly easier to implement in a raytracer. The
+only area where rasterization provides a benefit is for rendering at very high
+frame rates, needed for example for immersive visualization.
 
 It is for these reasons that interactive raytracing is the future technology for
 interactive and offline rendering at Blue Brain. We have developed a first open
@@ -388,7 +390,8 @@ source implementation of a visualization engine with different backends:
 OSPRay~\cite{ospray} for CPU-based raytracing and OptiX~\cite{optix} for
 GPU-based raytracing. These application called Brayns can load and visualize
 our data sets in a variety of modes and integrates with our messaging solution
-to be accessible from Python.
+to be accessible from Python. We are currently integrating the key algorithms
+from Livre for out-of-core volume rendering in Brayns.
 
 \FIXME{teaser gallery}
 
@@ -402,7 +405,7 @@ of dimensions increase. To render such data interactively, out-of-core (OOC)
 storage using multi-resolution algorithms are commonly employed.
 
 Livre is an interactive volume rendering engine available under a permissive
-open source license. Our main contribution are: an state-of-the-art
+open source license. Our main contributions are: an state-of-the-art
 implementation of an octree-based level-of-detail selection, a task parallel
 rendering pipeline, a multi-GPU based parallel rendering engine, and an easily
 extensible renderer through the use of plugin data sources. Furthermore we
@@ -443,11 +446,14 @@ even requirement to read the input data from a file system. This flexibility of
 the plugin approach lead to novel volume rendering use cases, where volume
 representations are created on the fly from different input data sets.
 
+\FIXME{teaser gallery}
 
 %----------------------------------------------------------------------
 \section{Discussion and Conclusion}
 %----------------------------------------------------------------------
 \label{sec:conclusions}
+
+Brayns will become the integrative visualizer
 
 %----------------------------------------------------------------------
 \section*{Acknowledgments}
