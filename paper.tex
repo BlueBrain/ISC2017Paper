@@ -2,7 +2,7 @@
 \documentclass[10pt]{llncs}
 
 \usepackage{cite}
-    \usepackage{mathptmx}
+\usepackage{mathptmx}
 \usepackage{graphicx}
 \usepackage{times}
 %\usepackage{tabularx}
@@ -300,19 +300,73 @@ while( true )
 
 \subsubsection{HTTP Server}
 
-The http server is built using cppnetlib \cite{cppnetlib} for the transport and
+The http server is built using cppnetlib~\cite{cppnetlib} for the transport and
 http protocol handling. It supports all standard http verbs (GET, POST, PUT,
 PATCH, DELETE). It is a \textsf{zeroeq::Receiver}, that is, it can share its
 \textsf{receive()} update operation with other subscribers and http servers.
 Unlike a subscriber, the http server follows the HTTP request-reply semantics,
 that is, a request received by a server has to be followed directly by its
-reply. future
+reply. To allow asynchronous request processing, the return value from the
+request handler is a \textsf{std::future} which is retrieved from an internal
+thread, thus allowing the application to continue operations.
 
+The http server is introspectable, it allows querying the available endpoints
+(objects) and the JSON schema~\cite{jsonschema} for each endpoint.
+\lref{lhttpReg} shows an excerpt of the Tide registry, and \lref{lhttpSchema} an
+excerpt of the schema for one of the exposed objects. This REST API is used by
+the Tide web interface from Javascript and to generate remote python APIs.
 
-vocabulary
+\noindent\begin{minipage}[b][][b]{.48\textwidth}
+\begin{lstlisting}[caption=HTTP Server Registry, label=lhttpReg]
+> GET /registry HTTP/1.0
+{
+[...]
+   "tide/open" : [ "PUT" ],
+   "tide/options" : [ "GET", "PUT" ],
+   "tide/resize-window" : [ "PUT" ],
+[...]
+}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[b][][b]{.48\textwidth}
+\begin{lstlisting}[caption=Object JSON Schema, label=lhttpSchema]
+> GET /tide/options/schema HTTP/1.0
+{
+[...]
+    "properties": {
+        "alphaBlending": {
+            "type": "boolean"
+        },
+[...]
+}
+\end{lstlisting}
+\end{minipage}
+
+\subsection{Remote Python API}
+
+The remote python API provides easy to use access to remote applications using
+the http server. It integrates two features: generic code generation for the
+REST API exposed by the application, and automatic resource allocation and
+application launch.
+
+The generic code generation is implemented in a pure python module, which has
+no dependency to the interfaced C++ application. It queries the http server and
+generates a python API for all exposed objects. This API can then be
+conveniently used in python to remote control the application.
+
+Access to the application is established either through an explicit connection
+of a pre-launched application, or via a resource allocator. The allocator hides
+the details of allocating a resource, e.g. using a scheduling system like
+slurm, launching and connecting to the launched application from the python
+programmer.
 
 \section{Rendering Applications}
+
+The rendering applications form the backbone of our ecosystem.
+
 \subsection{Interactive Raytracing}
+
+\subsection{OpenGL Parallel Rendering}
 
 \subsection{Out-of-Core Volume Rendering}
 
