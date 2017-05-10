@@ -212,11 +212,10 @@ high-performance messaging. A fully integrated HTTP server provides a bridge to
 JavaScript, Python and similar environments by implementing REST APIs with JSON
 payload. \fig{fUML} shows a class diagram of our messaging solution.
 
-\begin{figure*}[ht]\center
+\begin{figure}[ht]\center
   \includegraphics[width=\columnwidth]{images/ZeroMS}
   \caption{\label{fUML}UML Diagram of the main messaging classes}
-\end{figure*}
-
+\end{figure}
 
 \subsection{ZeroEQ}
 
@@ -360,7 +359,14 @@ the details of allocating a resource, e.g. using a scheduling system like
 slurm, launching and connecting to the launched application from the python
 programmer.
 
-\FIXME{teaser gallery}
+\fig{fJupyter} shows an example session of using this Python API from a Jupyter
+notebook, allocating and launching a Brayns instance, setting relevant
+rendering parameters and retrieving an image.
+
+\begin{figure}[ht]\center
+  \includegraphics[width=\columnwidth]{images/jupyter}
+  \caption{\label{fJupyter}Example Jupyter notebook session using Brayns}
+\end{figure}
 
 \section{Rendering Applications}
 
