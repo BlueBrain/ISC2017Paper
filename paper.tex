@@ -360,15 +360,41 @@ the details of allocating a resource, e.g. using a scheduling system like
 slurm, launching and connecting to the launched application from the python
 programmer.
 
+\FIXME{teaser gallery}
+
 \section{Rendering Applications}
 
-The rendering applications form the backbone of our ecosystem.
+The rendering applications form the backbone of our ecosystem. They cover a
+wide range of established rendering algorithms to serve a broad set of use
+cases for visual debugging, scientific illustrations and outreach.
 
-\subsection{Interactive Raytracing}
+\subsection{Brayns: Interactive Raytracing}
 
-\subsection{OpenGL Parallel Rendering}
+Advances in computer hardware and software have brought raytracing to the point
+where it replaces classical rasterization for virtually all use cases in
+scientific visualization. On one hand, local illumination for typical OpenGL
+data sets (up to hundred million triangles) can be done at similar framerates
+to OpenGL~\cite{ospray}. For small datasets, OpenGL performs better, but for
+larger data sets raytracing outperforms OpenGL. This is due to a better
+scalability with respect to the data set size ($O(\log{N})$ vs $O(n)$).
+Furthermore, CPU-based raytracing allows the rendering of larger data sets
+without any level-of-detail algorithms due to the larger memory size. Last, but
+not least, advanced rendering algorithms such as shadowing, reflections and
+global illuminations are significantly easier to implement in a raytracer.
 
-\subsection{Out-of-Core Volume Rendering}
+It is for these reasons that interactive raytracing is the future technology for
+interactive and offline rendering at Blue Brain. We have developed a first open
+source implementation of a visualization engine with different backends:
+OSPRay~\cite{ospray} for CPU-based raytracing and OptiX~\cite{optix} for
+GPU-based raytracing. These application called Brayns can load and visualize
+our data sets in a variety of modes and integrates with our messaging solution
+to be accessible from Python.
+
+\FIXME{teaser gallery}
+
+\subsection{RTNeuron: OpenGL Parallel Rendering}
+
+\subsection{Livre: Out-of-Core Volume Rendering}
 
 Real-time rendering of volumetric data suffers from the curse of
 dimensionality. The data size of regular grids increases cubically as the number
