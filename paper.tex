@@ -117,14 +117,15 @@ few use cases.
 \section{High-Fidelity Displays}
 
 High-fidelity display systems are the integration point of the Blue Brain
-visualization infrastructure. They are the evolution of existing visualization
+visualization capabilities. They are the evolution of existing visualization
 systems, enabling higher resolution, immersion and team collaboration. Compared
 to current single-user or single-presenter systems, collaborative display
 systems allow real team work through a combination of size, resolution and user
 friendly implementation. Compared to immersive visualization systems like the
-CAVE, they provide a simple to use environment for high-fidelity visualization.
-For all use cases, the increased display size and resolution allows improved
-data exploration for 2D and 3D content, facilitating large data exploration.
+CAVE, they provide a more approachable environment for high-fidelity
+visualization. For all use cases, the increased display size and resolution
+allows better data exploration for 2D and 3D content, facilitating large data
+exploration.
 
 \subsection{Tiled Multitouch Display Walls}
 
@@ -137,52 +138,49 @@ configurations for a total of 24 and 18 Megapixel resolution, respectively. The
 display size of over five meter diagonally (four meter for $3\times 3$) allows
 team-size collaboration (up to ten people) or project-wide presentations (up to
 a hundred people). \fig{fTDW} shows one wall during a project-wide presentation
-with multiple interactive applications running concurrently on the wall.
+with multiple interactive applications running remotely on the wall.
 
 \begin{figure}[h!t]
   \includegraphics[width=\columnwidth]{images/tdw}
   \caption{\label{fTDW}Blue Brain $4\times 3$ tiled display wall}
 \end{figure}
 
-In the last years we implemented a production-ready setup of monoscopic tiled
-display walls. On one hand, while there is substantial research on tiled display
-wall software~\cite{Sage, Sage2, Omegalib, DK:11, JLMV:06, DisplayCluster}, we
-found that most solutions where not ready to be used in a $24\times 7$
-unattained environment. For this reason, we started with the TACC DisplayCluster
-open source software~\cite{DisplayCluster}, which we incrementally refactored
-and improved to the current TIDE implementation.
-
-On the other hand, the technology has been commoditized to make these type of
-installations affordable to medium-sized institutions which allowed us to build
-the software integration for a reasonable startup cost. We have focused on the
-multitouch user interface, which implements a low entry barrier for new users,
-a unique capability of our solution.
+While there is substantial research on tiled display wall software~\cite{Sage,
+Sage2, Omegalib, DK:11, JLMV:06, DisplayCluster}, we found that most solutions
+where not ready production use in a $24\times 7$ unattained environment. For
+this reason, we started with the TACC DisplayCluster open source
+software~\cite{DisplayCluster}, which we incrementally refactored and improved
+to the current TIDE implementation. On the other hand, the hardware has been
+commoditized to make these type of installations affordable to medium-sized
+institutions which allowed us to build the software integration for a reasonable
+startup cost. We have focused on the multitouch user interface, which implements
+a low entry barrier for new users, a unique capability of our solution.
 
 \subsection{OpenDeck}
 
 OpenDeck is our next-generation visualization system, aiming to integrate the
 success of tiled display walls with a seamless transition to fully immersive
-environments. We are currently in the process of installing the system which
+environments. We are currently in the process of installing a system which
 consists of a semi-cylindrical back-projection screen with 41 Megapixel usable
 resolution on a 36 $m^2$ surface (\fig{fOpenDeck}). Like the display walls, it
 is equipped with multitouch capabilities which makes it usable as a monoscopic
 collaboration system from the first day of installation. Unlike tiled display
 walls, it is active stereo capable and equipped with a 3D tracking system for
 immersive rendering. For increased immersion, a lower resolution front
-projection system fills in the floor area. OpenDeck will allow us to run our
-applications based on Equalizer~\cite{EMP:09} once the system is installed.
+projection system fills in the floor area. OpenDeck will run TIDA and our
+immersive applications based on Equalizer~\cite{EMP:09} once the system is
+installed.
 
 \begin{figure}[h!t]
   \includegraphics[width=\columnwidth]{images/opendeck}
   \caption{\label{fOpenDeck}OpenDeck concept rendering}
 \end{figure}
 
-The OpenDeck will provide a unique environment for the research and development
-of new visualization techniques. The OpenDeck immersive infrastructure with
-multitouch will open a set of questions along immersive touch user interfaces,
-transitions and mixing of monoscopic to immersive usage, the combination of
-tracked and touch devices, multi-user immersion, latency for remote immersive
-rendering as well as multi-site collaboration.
+OpenDeck will provide a unique environment for the research and development of
+new visualization techniques. It will open a set of questions along immersive
+touch user interfaces, transitions and mixing of monoscopic to immersive usage,
+the combination of tracked and touch devices, multi-user immersion, latency for
+remote immersive rendering as well as multi-site collaboration.
 
 \subsection{Tide}
 
@@ -207,13 +205,13 @@ supports three types of content: files (high-resolution images, movies, pdfs),
 built-in applications (web browser, whiteboard) and remote applications using
 the Deflect library (DesktopStreamer, Equalizer-based applications, Brayns).
 The multitouch user interface can handle multiple users manipulating different
-windows and their content.
+windows and their content simultaneously.
 
 \subsection{Deflect}
 
 Deflect is the client library for Tide. It provides an API for pixel streaming
 to Tide and for receiving events from Tide. The pixel streaming allows
-synchronized parallel streaming from a parallel rendering application as well as
+synchronized parallel streaming from parallel rendering application as well as
 monoscopic and stereoscopic streams. Various events allow the application to
 react to multi-touch input from the wall.
 
@@ -224,6 +222,96 @@ other machines onto a wall window and allows interaction with the remote
 desktop. Other rendering applications, such as our interactive raytracing
 engine Brayns~\cite{brayns} are easily integrated with Deflect and Tide.
 
+
+\section{Rendering Applications}
+
+The rendering applications form the backbone of our ecosystem. They cover a
+wide range of established rendering algorithms to serve a broad set of use
+cases for visual debugging, scientific illustrations and communication.
+
+\subsection{Brayns: Interactive Raytracing}
+
+Advances in computer hardware and software have brought raytracing to the point
+where it replaces classical rasterization for virtually all use cases in
+scientific visualization. On one hand, OpenGL-like local illumination for
+typical data sets used with rasterization (up to hundred million triangles) can
+be done at similar framerates to OpenGL~\cite{ospray}. For small datasets,
+OpenGL performs better, but for larger data sets raytracing outperforms OpenGL.
+This is due to a better scalability with respect to the data set size
+($O(\log{N})$ vs $O(n)$). Furthermore, CPU-based raytracing allows the rendering
+of larger data sets without any level-of-detail algorithms due to the larger
+memory size. Last, but not least, advanced rendering algorithms such as
+shadowing, reflections and global illuminations are significantly easier to
+implement in a raytracer. The only area where rasterization provides a benefit
+is for rendering at very high frame rates, needed for example for immersive
+visualization.
+
+It is for these reasons that interactive raytracing is the future technology for
+interactive and offline rendering at Blue Brain. We have developed a first open
+source implementation of a visualization engine with different backends:
+OSPRay~\cite{ospray} for CPU-based raytracing and OptiX~\cite{optix} for
+GPU-based raytracing. This application called Brayns can load and visualize our
+data sets in a variety of modes and integrates with our messaging solution to be
+accessible from Python. We are currently integrating the key algorithms from
+Livre for out-of-core volume rendering in Brayns, which will also facilitate
+mixing polygonal with volume data in a single scene.
+
+\FIXME{teaser gallery}
+
+\subsection{RTNeuron: OpenGL Parallel Rendering}
+
+\subsection{Livre: Out-of-Core Volume Rendering}
+
+Real-time rendering of volumetric data suffers from the curse of
+dimensionality. The data size of regular grids increases cubically as the number
+of dimensions increase. To render such data interactively, out-of-core (OOC)
+storage using multi-resolution algorithms are commonly employed.
+
+Livre is an interactive volume rendering engine available under a permissive
+open source license. Our main contributions are: an state-of-the-art
+implementation of an octree-based level-of-detail selection, a task parallel
+rendering pipeline, a multi-GPU based parallel rendering engine, and an easily
+extensible renderer through the use of plugin data sources. Furthermore we
+propose to create volume representations of different input data using
+on-the-fly, interactive transformations of the data, skipping costly
+preprocessing steps.
+
+Our system brings together state-of-the art algorithms to create a volume
+rendering engine capable of handling extremely high-resolution volumes using a
+high degree of parallelism, both on a single system as well as in a distributed
+cluster. We employ a GPU-based ray casting algorithm to compute the radiance
+absorption of the given volumetric data. The computation is executed per pixel
+on the pixel shader hardware of the GPU.
+
+In our out-of-core data access layer, multi-resolution data is represented as an
+octree data structure. This representation accelerates the selection of the
+proper level-of-detail and to track the status of the LODs (in CPU memory, in
+GPU memory, not loaded). While rendering, view-based LOD selection is performed
+using the on the screen-space-error (SSE)~\cite{guthe2004} technique. According
+to the requested maximum SSE, the selected LODs represent the given volume the
+best on the screen.
+
+The creation of volume bricks, their upload to the GPU and the rendering are
+executed in separate tasks. These tasks run asynchronously, that is, they do not
+block each other. This is particularly important for the render thread, which
+has to react to user input as quickly as possible to reduce input latency, and
+renders at interactive frame rates. The data loader thread can take seconds to
+generate the brick, for example in the field voxelization data source when
+sampling millions of events.
+
+Livre uses a plugin mechanism to access the volume data. In this mechanism, data
+sources are implemented as shared libraries and are loaded on application
+startup based on the URI of the input data. Loading the shared libraries on
+runtime allows to add third-party data loaders to an existing Livre application
+by simply placing them into the shared library directory. Data sources have to
+provide the requested volume bricks, that is, there is no defined file format or
+even requirement to read the input data from a file system. This flexibility of
+the plugin approach lead to novel volume rendering use cases, where volume
+representations are created on the fly from different input data sets.
+
+\FIXME{teaser gallery}
+
+
 \section{C++ Messaging and Services}
 
 \begin{wrapfigure}{r}{.382\textwidth}\center\vspace{-6ex}
@@ -231,12 +319,12 @@ engine Brayns~\cite{brayns} are easily integrated with Deflect and Tide.
   {\caption{\label{fZero}Messaging enables new use cases}}\vspace{-2ex}
 \end{wrapfigure}
 
-All Blue Brain applications integrate a messaging libraries which allow them
-to be used as services in a variety of use cases. For example, the Tide web
-server providing the user interface shown in \fig{fTideWeb}, is based on this
-messaging solution. Other use cases are remote python APIs, JavaScript user
-interfaces and service architectures combining multiple visualization
-applications with data providers such as HPC simulations (\fig{fZero}).
+All Blue Brain applications integrate messaging libraries which allow them to be
+used as services in a variety of use cases. For example, the Tide web server
+providing the user interface shown in \fig{fTideWeb}, is based on this messaging
+solution. Other use cases are remote python APIs, JavaScript user interfaces and
+service architectures combining multiple visualization applications with data
+providers such as HPC simulations (\fig{fZero}).
 
 The base communication layer ZeroEQ utilizes ZeroMQ as the transport layer, the
 ZeroConf protocol for discovery, and our novel ZeroBuf serialization library for
@@ -251,7 +339,7 @@ payload. \fig{fUML} shows a class diagram of our messaging solution.
 
 \subsection{ZeroEQ}
 
-ZeroEQ is the base messaging library, wrapping up existing technologies into an
+ZeroEQ is our C++ messaging library, wrapping up existing technologies into an
 API which is convenient to use and easy to integrate into C++ code. It provides
 two messaging services: publish-subscribe and HTTP. For binary and JSON
 encodings it relies on a simple \textsf{Serializable} interface, for which
@@ -433,91 +521,6 @@ bare-metal visualization cluster node.
   \caption{\label{fJupyter}Example Jupyter notebook session using Brayns}
 \end{figure}
 
-\section{Rendering Applications}
-
-The rendering applications form the backbone of our ecosystem. They cover a
-wide range of established rendering algorithms to serve a broad set of use
-cases for visual debugging, scientific illustrations and communication.
-
-\subsection{Brayns: Interactive Raytracing}
-
-Advances in computer hardware and software have brought raytracing to the point
-where it replaces classical rasterization for virtually all use cases in
-scientific visualization. On one hand, local illumination for typical OpenGL
-data sets (up to hundred million triangles) can be done at similar framerates
-to OpenGL~\cite{ospray}. For small datasets, OpenGL performs better, but for
-larger data sets raytracing outperforms OpenGL. This is due to a better
-scalability with respect to the data set size ($O(\log{N})$ vs $O(n)$).
-Furthermore, CPU-based raytracing allows the rendering of larger data sets
-without any level-of-detail algorithms due to the larger memory size. Last, but
-not least, advanced rendering algorithms such as shadowing, reflections and
-global illuminations are significantly easier to implement in a raytracer. The
-only area where rasterization provides a benefit is for rendering at very high
-frame rates, needed for example for immersive visualization.
-
-It is for these reasons that interactive raytracing is the future technology for
-interactive and offline rendering at Blue Brain. We have developed a first open
-source implementation of a visualization engine with different backends:
-OSPRay~\cite{ospray} for CPU-based raytracing and OptiX~\cite{optix} for
-GPU-based raytracing. These application called Brayns can load and visualize
-our data sets in a variety of modes and integrates with our messaging solution
-to be accessible from Python. We are currently integrating the key algorithms
-from Livre for out-of-core volume rendering in Brayns.
-
-\FIXME{teaser gallery}
-
-\subsection{RTNeuron: OpenGL Parallel Rendering}
-
-\subsection{Livre: Out-of-Core Volume Rendering}
-
-Real-time rendering of volumetric data suffers from the curse of
-dimensionality. The data size of regular grids increases cubically as the number
-of dimensions increase. To render such data interactively, out-of-core (OOC)
-storage using multi-resolution algorithms are commonly employed.
-
-Livre is an interactive volume rendering engine available under a permissive
-open source license. Our main contributions are: an state-of-the-art
-implementation of an octree-based level-of-detail selection, a task parallel
-rendering pipeline, a multi-GPU based parallel rendering engine, and an easily
-extensible renderer through the use of plugin data sources. Furthermore we
-propose to create volume representations of different input data using
-on-the-fly, interactive transformations of the data, skipping costly
-preprocessing steps.
-
-Our system brings together state-of-the art algorithms to create a volume
-rendering engine capable of handling extremely high-resolution volumes using a
-high degree of parallelism, both on a single system as well as in a distributed
-cluster. We employ a GPU-based ray casting algorithm to compute the radiance
-absorption of the given volumetric data. The computation is executed per pixel
-on the pixel shader hardware of the GPU.
-
-In our out-of-core data access layer, multi-resolution data is represented as an
-octree data structure. This representation accelerates the selection of the
-proper level-of-detail and to track the status of the LODs (in CPU memory, in
-GPU memory, not loaded). While rendering, view-based LOD selection is performed
-using the on the screen-space-error (SSE)~\cite{guthe2004} technique. According
-to the requested maximum SSE, the selected LODs represent the given volume the
-best on the screen.
-
-The creation of volume bricks, their upload to the GPU and the rendering are
-executed in separate tasks. These tasks run asynchronously, that is, they do not
-block each other. This is particularly important for the render thread, which
-has to react to user input as quickly as possible to reduce input latency, and
-renders at interactive frame rates. The data loader thread can take seconds to
-generate the brick, for example in the field voxelization data source when
-sampling millions of events.
-
-Livre uses a plugin mechanism to access the volume data. In this mechanism, data
-sources are implemented as shared libraries and are loaded on application
-startup based on the URI of the input data. Loading the shared libraries on
-runtime allows to add third-party data loaders to an existing Livre application
-by simply placing them into the shared library directory. Data sources have to
-provide the requested volume bricks, that is, there is no defined file format or
-even requirement to read the input data from a file system. This flexibility of
-the plugin approach lead to novel volume rendering use cases, where volume
-representations are created on the fly from different input data sets.
-
-\FIXME{teaser gallery}
 
 %----------------------------------------------------------------------
 \section{Discussion and Conclusion}
