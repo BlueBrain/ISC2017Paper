@@ -30,7 +30,7 @@
 \setlength{\columnsep}{2em}% wrapfig margin, among others
 
 % correct bad hyphenation here
-\hyphenation{op-tical net-works semi-conduc-tor}
+\hyphenation{op-tical net-works semi-conduc-tor Zero-Buf}
 
 
 \begin{document}
@@ -92,17 +92,39 @@ High-Performance Visualization at Blue Brain}
   python applications.
 \end{abstract}
 
+\section{Motivation}
+
+The Blue Brain Project (BBP) uses simulation-based research to analyze and reverse
+engineer cortical neuron circuits. The simulated models go beyond using detailed
+models of individual neurons or large-scale network models of simplified
+neurons, they model in the order of hundreds of thousands of detailed neurons in
+a fully connected circuit. The project generates a multitude of data for the
+model building and during the simulation of these models. This data ranges from
+terabyte-sized image stacks for data extraction to detailed in-silico circuit
+models of large geometric complexity and terabyte-size simulation reports.
+
+Visualization supports the BBP along all parts of this project to understand and
+debug model data, building and simulation algorithms as well as validating and
+discovering new insight from the in-silico experiments. Our strategy to support
+this mission is based on components linked through network protocols:
+High-fidelity display systems to see more detail in complex data, a set of
+standard rendering engines (rasterization, out-of-core volume rendering,
+interactive raytracing), and decoupled, light-weight applications using remote
+these components. In the following we will present these components along with a
+few use cases.
+
+
 \section{High-Fidelity Displays}
 
 High-fidelity display systems are the integration point of the Blue Brain
 visualization infrastructure. They are the evolution of existing visualization
-systems, enabling higher resolution, immersion and collaboration. Compared to
-the current single-user or single-presenter systems, collaborative display
+systems, enabling higher resolution, immersion and team collaboration. Compared
+to current single-user or single-presenter systems, collaborative display
 systems allow real team work through a combination of size, resolution and user
 friendly implementation. Compared to immersive visualization systems like the
 CAVE, they provide a simple to use environment for high-fidelity visualization.
 For all use cases, the increased display size and resolution allows improved
-data exploration for 2D and 3D content.
+data exploration for 2D and 3D content, facilitating large data exploration.
 
 \subsection{Tiled Multitouch Display Walls}
 
@@ -122,12 +144,13 @@ with multiple interactive applications running concurrently on the wall.
   \caption{\label{fTDW}Blue Brain $4\times 3$ tiled display wall}
 \end{figure}
 
-In the last years we created a production-ready setup of monoscopic tiled
+In the last years we implemented a production-ready setup of monoscopic tiled
 display walls. On one hand, while there is substantial research on tiled display
-wall software, we found that most solutions where not ready to be used in
-$24\times 7$ unattained environment. For this reason, we started with the TACC
-DisplayCluster open source software~\cite{DisplayCluster}, which we
-incrementally refactored and improved to the current TIDE implementation.
+wall software~\cite{Sage, Sage2, Omegalib, DK:11, JLMV:06, DisplayCluster}, we
+found that most solutions where not ready to be used in a $24\times 7$
+unattained environment. For this reason, we started with the TACC DisplayCluster
+open source software~\cite{DisplayCluster}, which we incrementally refactored
+and improved to the current TIDE implementation.
 
 On the other hand, the technology has been commoditized to make these type of
 installations affordable to medium-sized institutions which allowed us to build
@@ -205,7 +228,7 @@ engine Brayns~\cite{brayns} are easily integrated with Deflect and Tide.
 
 \begin{wrapfigure}{r}{.382\textwidth}\center\vspace{-6ex}
   \includegraphics[width=.382\textwidth]{images/ZeroMS}
-  {\caption{\label{fZero}Messaging libraries and use cases}}\vspace{-2ex}
+  {\caption{\label{fZero}Messaging enables new use cases}}\vspace{-2ex}
 \end{wrapfigure}
 
 All Blue Brain applications integrate a messaging libraries which allow them
@@ -251,7 +274,7 @@ The pub-sub service is stateless, that is, applications have no expectation of
 when messages are received or who receives published messages. This
 communication pattern naturally leads to robust services, since there is no
 possiblity for deadlocks or undefined behaviour. The pub-sub API is provided in
-two flavors: a simple $pointer \& size$ memory buffer, and a higher level
+two flavors: a simple $pointer\ \&\ size$ memory buffer, and a higher level
 object-based abstraction. The object-based API is syntactic sugar for the
 low-level API, and allows automatic publish and update of objects with a few
 lines of code. It uses the \textsf{toBinary()} and \textsf{fromBinary()} methods
@@ -362,17 +385,24 @@ involves a copy using a \textsf{std::string}. ZeroBuf can store:
 
 \begin{compactitem}
 \item (u)int[8,16,32,64,128]\_t, float, double and string members
-\item fixed size arrays and dynamic vectors of static-sized elements (intrinsic members or composite types)
+\item fixed size arrays and dynamic vectors of static-sized elements (intrinsic
+members or composite types)
 \item static and dynamic sub-classes (composite types of the above)
 \end{compactitem}
+
 
 \begin{figure}[ht]\center
   \includegraphics[width=\columnwidth]{images/ZeroBufStatic}\\\vspace{4ex}
   \includegraphics[width=\columnwidth]{images/ZeroBufDynamic}
-  \caption{\label{fZeruBuf}ZeroBuf Examples for static (top) and dynamic (bottom) sized objects}
+  \caption{\label{fZeroBuf}ZeroBuf Examples for static (top) and dynamic
+(bottom) sized objects}
 \end{figure}
 
-
+\fig{fZeroBuf} shows two simple ZeroBuf schemas together with example usage of
+the generated code in C++ and their memory layout. The static example shows
+nested ZeroBuf classes for the camera used in \lref{lPubSub}, and the dynamic
+example shows how raw data access is used to prepare a JPEG image for
+publishing.
 
 \subsection{Remote Python API}
 
@@ -393,8 +423,10 @@ slurm, launching and connecting to the launched application from the python
 programmer.
 
 \fig{fJupyter} shows an example session of using this Python API from a Jupyter
-notebook, allocating and launching a Brayns instance, setting relevant
-rendering parameters and retrieving an image.
+notebook, allocating and launching a Brayns instance, setting relevant rendering
+parameters and retrieving an image. Note that the whole notebook runs in a
+light-weight VM with no GPU and interacts with a Brayns instance launched on a
+bare-metal visualization cluster node.
 
 \begin{figure}[ht]\center
   \includegraphics[width=\columnwidth]{images/jupyter}
@@ -405,7 +437,7 @@ rendering parameters and retrieving an image.
 
 The rendering applications form the backbone of our ecosystem. They cover a
 wide range of established rendering algorithms to serve a broad set of use
-cases for visual debugging, scientific illustrations and outreach.
+cases for visual debugging, scientific illustrations and communication.
 
 \subsection{Brayns: Interactive Raytracing}
 
@@ -493,6 +525,12 @@ representations are created on the fly from different input data sets.
 \label{sec:conclusions}
 
 Brayns will become the integrative visualizer
+
+Messaging enables surprising new use cases
+
+Tiled display walls are cheap and ready for new ways of working
+
+
 
 %----------------------------------------------------------------------
 \section*{Acknowledgments}
