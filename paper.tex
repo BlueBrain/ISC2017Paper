@@ -262,54 +262,43 @@ mixing polygonal with volume data in a single scene.
 
 \subsection{Livre: Out-of-Core Volume Rendering}
 
-Real-time rendering of volumetric data suffers from the curse of
-dimensionality. The data size of regular grids increases cubically as the number
-of dimensions increase. To render such data interactively, out-of-core (OOC)
-storage using multi-resolution algorithms are commonly employed.
-
 Livre is an interactive volume rendering engine available under a permissive
-open source license. Our main contributions are: an state-of-the-art
-implementation of an octree-based level-of-detail selection, a task parallel
-rendering pipeline, a multi-GPU based parallel rendering engine, and an easily
-extensible renderer through the use of plugin data sources. Furthermore we
-propose to create volume representations of different input data using
-on-the-fly, interactive transformations of the data, skipping costly
-preprocessing steps.
-
-Our system brings together state-of-the art algorithms to create a volume
-rendering engine capable of handling extremely high-resolution volumes using a
-high degree of parallelism, both on a single system as well as in a distributed
-cluster. We employ a GPU-based ray casting algorithm to compute the radiance
-absorption of the given volumetric data. The computation is executed per pixel
-on the pixel shader hardware of the GPU.
+open source license. Our main contributions are: a state-of-the-art
+implementation of an octree-based level-of-detail (LOD) selection, a task
+parallel rendering pipeline, a multi-GPU parallel rendering engine, and an
+easily extensible renderer through the use of plugin data sources. Our system
+brings together state-of-the art algorithms to create a volume rendering engine
+capable of handling extremely high-resolution volumes using a high degree of
+parallelism, both on a single system and in a distributed cluster. We employ a
+GPU-based ray casting algorithm to compute the radiance absorption of the given
+volumetric data. The computation is executed per pixel on the pixel shader
+hardware of the GPU.
 
 In our out-of-core data access layer, multi-resolution data is represented as an
 octree data structure. This representation accelerates the selection of the
 proper level-of-detail and to track the status of the LODs (in CPU memory, in
 GPU memory, not loaded). While rendering, view-based LOD selection is performed
-using the on the screen-space-error (SSE)~\cite{guthe2004} technique. According
-to the requested maximum SSE, the selected LODs represent the given volume the
-best on the screen.
+using the screen-space-error (SSE)~\cite{guthe2004} technique. \fig{fLivre}
+shows the rendering of 300 GB volume with an illustration of the selected LOD
+levels.
+
+\begin{figure}[h!t]
+    \includegraphics[width=.45\columnwidth]{images/livre}\hfill
+    \includegraphics[width=.45\columnwidth]{images/livreLOD}
+  \caption{\label{fLivre}Livre rendering a 300GB vasculature dataset (left) and
+    the selected LODs (right)}
+\end{figure}
 
 The creation of volume bricks, their upload to the GPU and the rendering are
-executed in separate tasks. These tasks run asynchronously, that is, they do not
-block each other. This is particularly important for the render thread, which
-has to react to user input as quickly as possible to reduce input latency, and
-renders at interactive frame rates. The data loader thread can take seconds to
-generate the brick, for example in the field voxelization data source when
-sampling millions of events.
-
-Livre uses a plugin mechanism to access the volume data. In this mechanism, data
-sources are implemented as shared libraries and are loaded on application
-startup based on the URI of the input data. Loading the shared libraries on
-runtime allows to add third-party data loaders to an existing Livre application
-by simply placing them into the shared library directory. Data sources have to
-provide the requested volume bricks, that is, there is no defined file format or
-even requirement to read the input data from a file system. This flexibility of
-the plugin approach lead to novel volume rendering use cases, where volume
-representations are created on the fly from different input data sets.
-
-\FIXME{teaser gallery}
+executed in separate tasks. These tasks run asynchronously, that is, rendering
+is decoupled from data loading. Livre uses a plugin mechanism to access the
+volume data, where data sources are implemented as shared libraries and are
+loaded on application startup based on the URI of the input data. Data sources
+only have to provide the requested volume bricks, that is, there is no defined
+file format or even requirement to read the input data from a file system. This
+flexibility of the plugin approach lead to novel volume rendering use cases,
+where volume representations are created on the fly from different input data
+sets, for example from simulation data.
 
 
 \section{Messaging and Service Architecture}
@@ -527,20 +516,20 @@ bare-metal visualization cluster node.
 %----------------------------------------------------------------------
 \label{sec:conclusions}
 
-We have presented a modular visualization architecture for large data
-visualization over a wide range of use cases, glued together by a modern and
-easy to use messaging infrastructure. This ecosystem allows us to flexibly
-support novel use cases, while pushing novel visualization capabilities,
-providing Blue Brain with a competitive visualization infrastructure. Messaging
-and remote APIs not only surprised us in their versatility and ease of
-integration with other tools, but have still a significant potential for future
-exploration of classical visualization software. Interactive raytracing is the
-rendering algorithm for us, and Brayns is becoming the integration point for our
-domain-specific visual applications and algorithms. Tiled display walls are
-affordable for a large set of institutions, and coupled with our open source
-TIDE software create new ways of truely collaborative work. TIDE, together with
-cheaper visualization hardware, will evolve in the future towards a seamless
-integration of immersive visualization.
+We presented a modular visualization architecture for large data visualization
+over a wide range of use cases, glued together by a modern and easy to use
+messaging infrastructure. This ecosystem allows us to flexibly support novel use
+cases, while pushing novel visualization capabilities, providing Blue Brain with
+a competitive visualization infrastructure. Messaging and remote APIs not only
+surprised us in their versatility and ease of integration with other ecosystems,
+but also have a significant potential for future exploration in classical
+visualization software. Interactive raytracing is the future rendering algorithm
+for us, and Brayns is becoming the integration point for our domain-specific
+visual applications and algorithms. Tiled display walls are affordable for a
+large set of institutions, and coupled with our open source TIDE software create
+new ways of truely collaborative work. TIDE, together with cheaper visualization
+hardware, will evolve in the future towards a seamless integration of immersive
+visualization.
 
 
 %----------------------------------------------------------------------
