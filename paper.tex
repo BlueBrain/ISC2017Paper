@@ -77,19 +77,18 @@ High-Performance Visualization at Blue Brain}
 
 
 \begin{abstract}
-  The Blue Brain project has been investing in high-performance visualization
-  (HPV) to complement its HPC strategy since its inception in 2007. In 2011,
-  this strategy has been accelerated to develop innovative visualization
-  solutions through through increased funding and strategic partnerships with
-  other research institutions.
+  Blue Brain has pushed high-performance visualization (HPV) to complement its
+  HPC strategy since its inception in 2007. In 2011, this strategy has been
+  accelerated to develop innovative visualization solutions through increased
+  funding and strategic partnerships with other research institutions.
 
   We present the key elements of this HPV ecosystem, which integrates C++
   visualization applications with novel collaborative display systems. We
-  motivate how our strategy of transforming high-performance visualization
-  engines into services enables a variety of use cases, not only for the
-  integration with high-fidelity displays, but also to build service oriented
-  architectures, to link into web applications and to provide remote services to
-  python applications.
+  motivate how our strategy of transforming visualization engines into services
+  enables a variety of use cases, not only for the integration with
+  high-fidelity displays, but also to build service oriented architectures, to
+  link into web applications and to provide remote services to python
+  applications.
 \end{abstract}
 
 \section{Motivation}
@@ -103,7 +102,7 @@ model building and during the simulation of these models. This data ranges from
 terabyte-sized image stacks for data extraction to detailed in-silico circuit
 models of large geometric complexity and terabyte-size simulation reports.
 
-Visualization supports the BBP along all parts of this project to understand and
+Visualization supports the BBP along all parts of the project to understand and
 debug model data, building and simulation algorithms as well as validating and
 discovering new insight from the in-silico experiments. Our strategy to support
 this mission is based on components linked through network protocols:
@@ -279,8 +278,8 @@ octree data structure. This representation accelerates the selection of the
 proper level-of-detail and to track the status of the LODs (in CPU memory, in
 GPU memory, not loaded). While rendering, view-based LOD selection is performed
 using the screen-space-error (SSE)~\cite{guthe2004} technique. \fig{fLivre}
-shows the rendering of 300 GB volume with an illustration of the selected LOD
-levels.
+shows the rendering of a MicroCT dataset with an illustration of the selected
+LOD levels.
 
 \begin{figure}[h!t]
     \includegraphics[width=.45\columnwidth]{images/livre}\hfill
@@ -305,7 +304,7 @@ sets, for example from simulation data.
 
 \begin{wrapfigure}{r}{.382\textwidth}\center\vspace{-6ex}
   \includegraphics[width=.382\textwidth]{images/ZeroMS}
-  {\caption{\label{fZero}Messaging enables new use cases}}\vspace{-2ex}
+  {\caption{\label{fZero}New messaging use cases}}\vspace{-2ex}
 \end{wrapfigure}
 
 All Blue Brain applications integrate messaging libraries which allow them to be
