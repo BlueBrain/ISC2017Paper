@@ -87,7 +87,7 @@ High-Performance Visualization at Blue Brain}
   motivate how our strategy of transforming visualization engines into services
   enables a variety of use cases, not only for the integration with
   high-fidelity displays, but also to build service oriented architectures, to
-  link into web applications and to provide remote services to python
+  link into web applications and to provide remote services to Python
   applications.
 \end{abstract}
 
@@ -109,16 +109,16 @@ discovering new insight from the in-silico experiments. Our strategy to support
 this mission is based on components linked through network protocols:
 High-fidelity display systems to see more detail in complex data, a set of
 standard rendering engines (rasterization, out-of-core volume rendering,
-interactive raytracing), and decoupled, light-weight applications using remote
-these components. In the following we will present these components along with a
-few use cases.
+interactive raytracing), and decoupled, light-weight applications using
+these components remotely. In the following we will present these components
+along with a few use cases.
 
 
 \section{High-Fidelity Displays}
 
 High-fidelity display systems are the integration point of the Blue Brain
 visualization capabilities. They are the evolution of existing visualization
-systems, enabling higher resolution, immersion and team collaboration. Compared
+systems, enabling high resolution, immersion and team collaboration. Compared
 to current single-user or single-presenter systems, collaborative display
 systems allow real team work through a combination of size, resolution and user
 friendly implementation. Compared to immersive visualization systems like the
@@ -126,40 +126,6 @@ CAVE, they provide a more approachable environment for high-fidelity
 visualization. For all use cases, the increased display size and resolution
 allows better data exploration for 2D and 3D content, facilitating large data
 exploration.
-
-\subsection{Tide}
-
-Tide (Tiled Interactive Display Environment) is the software driving the Blue
-Brain tiled display walls and the future OpenDeck. It provides multi-window,
-multi-user touch interaction on large surfaces --- think of a giant
-collaborative wall-mounted tablet. Tide is a distributed application that can
-run on multiple machines to power display walls or projection systems of any
-size. Its user interface is designed to offer an intuitive experience on touch
-walls. It works just as well on non touch-capable installations by using its web
-interface from any web browser. \fig{fTDW} shows Tide on a $4\times 3$ display
-wall and \fig{fTideWeb} shows the Tide web interface in a browser.
-
-\begin{figure}[h!t]
-  \includegraphics[width=\columnwidth]{images/tideweb}
-  \caption{\label{fTideWeb}Tide web interface}
-\end{figure}
-
-While there is substantial research on tiled display wall software~\cite{Sage,
-Sage2, Omegalib, DK:11, JLMV:06, DisplayCluster}, we found that most solutions
-were not ready for production use in a $24\times 7$ unattended environment. For
-this reason, we started with the TACC DisplayCluster open source
-software~\cite{DisplayCluster}, which we incrementally refactored and improved
-to the current TIDE implementation. On the other hand, the hardware has been
-commoditized to make these type of installations affordable to medium-sized
-institutions which allowed us to build the software integration for a reasonable
-startup cost. We have focused on the multitouch user interface, which implements
-a low entry barrier for new users, a unique capability of our solution.
-
-Tide supports three types of content: files (high-resolution images, movies,
-pdfs), built-in applications (web browser, whiteboard) and remote applications
-using the Deflect library (DesktopStreamer, Equalizer-based applications,
-Brayns). The multitouch user interface can handle multiple users manipulating
-different windows and their content simultaneously.
 
 \subsection{Tiled Multitouch Display Walls}
 
@@ -178,6 +144,56 @@ with multiple interactive applications running remotely on the wall.
   \includegraphics[width=\columnwidth]{images/tdw}
   \caption{\label{fTDW}Blue Brain $4\times 3$ tiled display wall}
 \end{figure}
+
+\subsection{Tide}
+
+Tide (Tiled Interactive Display Environment) is the software driving the Blue
+Brain tiled display walls. It provides multi-window, multi-user touch
+interaction on large surfaces --- think of a giant collaborative wall-mounted
+tablet. Tide is a distributed application that can run on multiple machines to
+power display walls or projection systems of any size. Its user interface is
+designed to offer an intuitive experience on touch walls. It works just as
+well on non touch-capable installations by using its web interface from any
+web browser. \fig{fTDW} shows Tide on a $4\times 3$ display wall and
+\fig{fTideWeb} shows the Tide web interface in a browser.
+
+\begin{figure}[h!t]
+  \includegraphics[width=\columnwidth]{images/tideweb}
+  \caption{\label{fTideWeb}Tide web interface}
+\end{figure}
+
+While there is substantial research on tiled display wall software~\cite{Sage,
+Sage2, Omegalib, DK:11, JLMV:06, DisplayCluster}, we found that most solutions
+were not ready for production use in a $24\times 7$ unattended environment. For
+this reason, we started with the TACC DisplayCluster open source
+software~\cite{DisplayCluster}, which we incrementally refactored and improved
+to the current TIDE implementation. On the other hand, the hardware has been
+commoditized to make these type of installations affordable to medium-sized
+institutions which allowed us to build the software integration for a reasonable
+startup cost. % I don't understand very well what do you try to mean with this last sentence.
+We have focused on the multitouch user interface, which implements
+a low entry barrier for new users, a unique capability of our solution.
+
+Tide supports three types of content: files (high-resolution images, movies,
+pdfs), built-in applications (web browser, whiteboard) and remote applications
+using the Deflect library (DesktopStreamer, Equalizer-based applications,
+Brayns). The multitouch user interface can handle multiple users manipulating
+different windows and their content simultaneously.
+
+\subsection{Deflect}
+
+Deflect is the client library for Tide. It provides an API for pixel streaming
+to Tide and for receiving events from Tide. The pixel streaming allows
+synchronized parallel streaming from parallel rendering application as well as
+monoscopic and stereoscopic streams. Various events allow the application to
+react to multi-touch input from the wall.
+
+Deflect is integrated into the Equalizer parallel rendering
+framework~\cite{EMP:09}, enabling transparent usage of Equalizer applications on
+Tide walls. Furthermore, the DesktopStreamer application mirrors the desktop of
+other machines onto a wall window and allows interaction with the remote
+desktop. Other rendering applications, such as our interactive raytracing
+engine Brayns~\cite{brayns} are easily integrated with Deflect and Tide.
 
 \subsection{OpenDeck}
 
@@ -205,22 +221,6 @@ touch user interfaces, transitions and mixing of monoscopic to immersive usage,
 the combination of tracked and touch devices, multi-user immersion, latency
 reduction for remote immersive rendering as well as multi-site collaboration.
 
-\subsection{Deflect}
-
-Deflect is the client library for Tide. It provides an API for pixel streaming
-to Tide and for receiving events from Tide. The pixel streaming allows
-synchronized parallel streaming from parallel rendering application as well as
-monoscopic and stereoscopic streams. Various events allow the application to
-react to multi-touch input from the wall.
-
-Deflect is integrated into the Equalizer parallel rendering
-framework~\cite{EMP:09}, enabling transparent usage of Equalizer applications on
-Tide walls. Furthermore, the DesktopStreamer application mirrors the desktop of
-other machines onto a wall window and allows interaction with the remote
-desktop. Other rendering applications, such as our interactive raytracing
-engine Brayns~\cite{brayns} are easily integrated with Deflect and Tide.
-
-
 \section{Rendering Applications}
 
 The rendering applications form the backbone of our ecosystem. They cover a
@@ -242,7 +242,7 @@ memory size. Last, but not least, advanced rendering algorithms such as
 shadowing, reflections and global illuminations are significantly easier to
 implement in a raytracer. The only area where rasterization provides a benefit
 is for rendering at very high frame rates, needed for example for immersive
-visualization.
+visualization, or very high resolutions.
 
 It is for these reasons that interactive raytracing is the future technology for
 interactive and offline rendering at Blue Brain. We have developed a first open
@@ -252,11 +252,44 @@ GPU-based raytracing. This application called Brayns can load and visualize our
 data sets in a variety of modes and integrates with our messaging solution to be
 accessible from Python. We are currently integrating the key algorithms from
 Livre for out-of-core volume rendering in Brayns, which will also facilitate
-mixing polygonal with volume data in a single scene.
+mixing polygonal with large volumetric data in a single scene.
 
 \FIXME{teaser gallery}
 
 \subsection{RTNeuron: OpenGL Parallel Rendering}
+
+RTNeuron is the oldest of our interactive visualization tools. Originally
+conceived as a standalone application for visualizing simulation results, it
+has evolved into a rasterization-based rendering engine library implemented in
+C++ with a Python wrapping. The power of RTNeuron lies in a domain specific API
+designed for the visualization of detailed neuronal circuit models, this API
+allows for building custom applications tailored for specific use cases.
+It provides features to visualize static circuit data and some simulation
+results. Static data visualization includes different visual representations for
+neurons, synapses, selective pruning of neuronal trees, clipping
+planes... The simulation results that can be displayed are the spiking
+activity of the neurons and scalar variables from the cable models mapped to
+the neuron surface. The color maps for displaying these data are highly
+configurable, being posible to apply different color maps to different cell
+subsets.
+
+Neurons can be displayed with different levels of detail ranging from simple
+spheres, cylinder-like geometric models and detailed polygonal
+meshes. Advanced rendering techniques included are several types of parallel
+rendering algorithms (such as sort-first and sort-last) and several algorithms
+for transparency rendering that enable efficient and correct rendering of
+scenes with great geometrical complexity and high depth
+complexity. Transparency is particularly suitable for masking and highlighting
+features of interest on the circuit. Ongoing work is a more scalable parallel
+rendering algorithm specially suited for transparency. Tiled rendering is also
+possible, which allows very high resolution renderings suitable for printing
+at sizes larger than A0.
+
+The core engine is implemented in C++ using Equalizer and OpenSceneGraph and
+also leverages part of our messaging framework to allow coupling with other
+applications. The 3D view can be embedded inside Qt applications, in particular
+in Python with PyQt and QML for overlaying GUI elements. Several use-case
+specific applications have been built this way.
 
 \subsection{Livre: Out-of-Core Volume Rendering}
 
@@ -533,6 +566,7 @@ visualization.
 %----------------------------------------------------------------------
 \section*{Acknowledgments}
 %----------------------------------------------------------------------
+
 This publication was supported by the Blue Brain Project (BBP), the Swiss
 National Science Foundation under Grant 200020-129525, the King Abdullah
 University of Science and Technology (KAUST) through the KAUST-EPFL alliance for
@@ -541,6 +575,9 @@ Innovation under grant (TIN2010-21289-C02-01/02), the Cajal Blue Brain Project,
 Hasler Stiftung Projekt Nr. 12097, and from the European Union’s Horizon 2020
 research and innovation programme under grant agreement No 720270 (HBP SGA1).
 
+We would also like to thank the people from GMRV at the Rey Juan Carlos
+University (URJC) for their collaboration under the Cajal Blue Brain and HBP
+projects.
 
 \bibliographystyle{abbrv}
 \bibliography{references/references}
