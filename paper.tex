@@ -93,14 +93,15 @@ High-Performance Visualization at Blue Brain}
 
 \section{Motivation}
 
-The Blue Brain Project (BBP) uses simulation-based research to analyze and reverse
-engineer cortical neuron circuits. The simulated models go beyond using detailed
-models of individual neurons or large-scale network models of simplified
-neurons, they model in the order of hundreds of thousands of detailed neurons in
-a fully connected circuit. The project generates a multitude of data for the
-model building and during the simulation of these models. This data ranges from
-terabyte-sized image stacks for data extraction to detailed in-silico circuit
-models of large geometric complexity and terabyte-size simulation reports.
+The Blue Brain Project (BBP) uses simulation-based research to analyze and
+reverse engineer cortical neuron circuits. The simulated models go beyond using
+detailed models of individual neurons or large-scale network models of
+simplified neurons, they model in the order of hundreds of thousands of detailed
+neurons in a fully connected circuit. The project generates a multitude of data
+for the model building and during the simulation of these models. This data
+ranges from terabyte-sized image stacks for data extraction to detailed
+in-silico circuit models of large geometric complexity and terabyte-size
+simulation reports.
 
 Visualization supports the BBP along all parts of the project to understand and
 debug model data, building and simulation algorithms as well as validating and
@@ -126,61 +127,6 @@ visualization. For all use cases, the increased display size and resolution
 allows better data exploration for 2D and 3D content, facilitating large data
 exploration.
 
-\subsection{Tiled Multitouch Display Walls}
-
-The core of the Blue Brain visualization infrastructure are multiple
-high-resolution tiled display walls driven by our Tide software~\cite{tide}. All
-walls are equipped with a multitouch user interface and can be remote controlled
-from any web browser. The walls are build using thin-bezel, 55 inch, Full HD LCD
-panels with a hardened glass sheet. We use $4\times 3$ and $3\times 3$
-configurations for a total of 24 and 18 Megapixel resolution, respectively. The
-display size of over five meter diagonally (four meter for $3\times 3$) allows
-team-size collaboration (up to ten people) or project-wide presentations (up to
-a hundred people). \fig{fTDW} shows one wall during a project-wide presentation
-with multiple interactive applications running remotely on the wall.
-
-\begin{figure}[h!t]
-  \includegraphics[width=\columnwidth]{images/tdw}
-  \caption{\label{fTDW}Blue Brain $4\times 3$ tiled display wall}
-\end{figure}
-
-While there is substantial research on tiled display wall software~\cite{Sage,
-Sage2, Omegalib, DK:11, JLMV:06, DisplayCluster}, we found that most solutions
-where not ready production use in a $24\times 7$ unattained environment. For
-this reason, we started with the TACC DisplayCluster open source
-software~\cite{DisplayCluster}, which we incrementally refactored and improved
-to the current TIDE implementation. On the other hand, the hardware has been
-commoditized to make these type of installations affordable to medium-sized
-institutions which allowed us to build the software integration for a reasonable
-startup cost. We have focused on the multitouch user interface, which implements
-a low entry barrier for new users, a unique capability of our solution.
-
-\subsection{OpenDeck}
-
-OpenDeck is our next-generation visualization system, aiming to integrate the
-success of tiled display walls with a seamless transition to fully immersive
-environments. We are currently in the process of installing a system which
-consists of a semi-cylindrical back-projection screen with 41 Megapixel usable
-resolution on a 36 $m^2$ surface (\fig{fOpenDeck}). Like the display walls, it
-is equipped with multitouch capabilities which makes it usable as a monoscopic
-collaboration system from the first day of installation. Unlike tiled display
-walls, it is active stereo capable and equipped with a 3D tracking system for
-immersive rendering. For increased immersion, a lower resolution front
-projection system fills in the floor area. OpenDeck will run TIDA and our
-immersive applications based on Equalizer~\cite{EMP:09} once the system is
-installed.
-
-\begin{figure}[h!t]
-  \includegraphics[width=\columnwidth]{images/opendeck}
-  \caption{\label{fOpenDeck}OpenDeck concept rendering}
-\end{figure}
-
-OpenDeck will provide a unique environment for the research and development of
-new visualization techniques. It will open a set of questions along immersive
-touch user interfaces, transitions and mixing of monoscopic to immersive usage,
-the combination of tracked and touch devices, multi-user immersion, latency for
-remote immersive rendering as well as multi-site collaboration.
-
 \subsection{Tide}
 
 Tide (Tiled Interactive Display Environment) is the software driving the Blue
@@ -198,13 +144,66 @@ any web browser. \fig{fTDW} shows Tide on a $4\times 3$ display wall and
   \caption{\label{fTideWeb}Tide web interface}
 \end{figure}
 
-Compared to other solutions~\cite{Sage,Sage2,DisplayCluster}, the development of
-Tide was driven by the need of a stable and easy to use implementation. Tide
-supports three types of content: files (high-resolution images, movies, pdfs),
-built-in applications (web browser, whiteboard) and remote applications using
-the Deflect library (DesktopStreamer, Equalizer-based applications, Brayns).
-The multitouch user interface can handle multiple users manipulating different
-windows and their content simultaneously.
+While there is substantial research on tiled display wall software~\cite{Sage,
+Sage2, Omegalib, DK:11, JLMV:06, DisplayCluster}, we found that most solutions
+were not ready for production use in a $24\times 7$ unattended environment. For
+this reason, we started with the TACC DisplayCluster open source
+software~\cite{DisplayCluster}, which we incrementally refactored and improved
+to the current TIDE implementation. On the other hand, the hardware has been
+commoditized to make these type of installations affordable to medium-sized
+institutions which allowed us to build the software integration for a reasonable
+startup cost. We have focused on the multitouch user interface, which implements
+a low entry barrier for new users, a unique capability of our solution.
+
+Tide supports three types of content: files (high-resolution images, movies,
+pdfs), built-in applications (web browser, whiteboard) and remote applications
+using the Deflect library (DesktopStreamer, Equalizer-based applications,
+Brayns). The multitouch user interface can handle multiple users manipulating
+different windows and their content simultaneously.
+
+\subsection{Tiled Multitouch Display Walls}
+
+The core of the Blue Brain visualization infrastructure are multiple
+high-resolution tiled display walls driven by our Tide software~\cite{tide}. All
+walls are equipped with a multitouch user interface and can be remote controlled
+from any web browser. The walls are built using thin-bezel, 55 inch, Full HD LCD
+panels with a hardened glass sheet. We use $4\times 3$ and $3\times 3$
+configurations for a total of 24 and 18 Megapixel resolution, respectively. The
+display size of over five meter diagonally (four meter for $3\times 3$) allows
+team-size collaboration (up to ten people) or project-wide presentations (up to
+a hundred people). \fig{fTDW} shows one wall during a project-wide presentation
+with multiple interactive applications running remotely on the wall.
+
+\begin{figure}[h!t]
+  \includegraphics[width=\columnwidth]{images/tdw}
+  \caption{\label{fTDW}Blue Brain $4\times 3$ tiled display wall}
+\end{figure}
+
+\subsection{OpenDeck}
+
+OpenDeck is our next-generation visualization system, aiming to integrate the
+success of tiled display walls with a seamless transition to fully immersive
+environments. We are currently in the process of installing a system which
+consists of a semi-cylindrical back-projection screen with 41 Megapixel usable
+resolution on a 36 $m^2$ surface (\fig{fOpenDeck}). Like the display walls, it
+is equipped with multitouch capabilities which makes it usable as a monoscopic
+collaboration system from the first day of installation. Unlike tiled display
+walls, it is active stereo capable and equipped with a 3D tracking system for
+immersive rendering. For increased immersion, a lower resolution front
+projection system fills in the floor area. OpenDeck will run TIDE and our
+immersive applications based on Equalizer~\cite{EMP:09} once the system is
+installed.
+
+\begin{figure}[h!t]
+  \includegraphics[width=\columnwidth]{images/opendeck}
+  \caption{\label{fOpenDeck}OpenDeck concept rendering}
+\end{figure}
+
+OpenDeck will provide a unique environment for the research and development of
+new visualization techniques. It will open a set of questions along immersive
+touch user interfaces, transitions and mixing of monoscopic to immersive usage,
+the combination of tracked and touch devices, multi-user immersion, latency
+reduction for remote immersive rendering as well as multi-site collaboration.
 
 \subsection{Deflect}
 
