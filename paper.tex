@@ -239,10 +239,16 @@ This is due to a better scalability with respect to the data set size
 ($O(\log{N})$ vs $O(n)$). Furthermore, CPU-based raytracing allows the rendering
 of larger data sets without any level-of-detail algorithms due to the larger
 memory size. Last, but not least, advanced rendering algorithms such as
-shadowing, reflections and global illuminations are significantly easier to
-implement in a raytracer. The only area where rasterization provides a benefit
-is for rendering at very high frame rates, needed for example for immersive
-visualization, or very high resolutions.
+shadowing, reflections and global illumination (\fig{fBrayns}, left) are
+significantly easier to implement in a raytracer. The only area where
+rasterization provides a benefit is for rendering at very high frame rates,
+needed for example for immersive visualization, or very high resolutions.
+
+\begin{figure}[ht]\center
+  \includegraphics[height=5cm]{images/Brayns003}\hfil
+  \includegraphics[height=5cm]{images/Brayns001}
+  \caption{\label{fBrayns}Interactive raytracing for neuroscience}
+\end{figure}
 
 It is for these reasons that interactive raytracing is the future technology for
 interactive and offline rendering at Blue Brain. We have developed a first open
@@ -252,9 +258,8 @@ GPU-based raytracing. This application called Brayns can load and visualize our
 data sets in a variety of modes and integrates with our messaging solution to be
 accessible from Python. We are currently integrating the key algorithms from
 Livre for out-of-core volume rendering in Brayns, which will also facilitate
-mixing polygonal with large volumetric data in a single scene.
-
-\FIXME{teaser gallery}
+mixing polygonal with large volumetric data in a single scene (\fig{fBrayns},
+right).
 
 \subsection{RTNeuron: OpenGL Parallel Rendering}
 
@@ -497,7 +502,6 @@ involves a copy using a \textsf{std::string}. ZeroBuf can store:
 members or composite types)
 \item static and dynamic sub-classes (composite types of the above)
 \end{compactitem}
-
 
 \begin{figure}[ht]\center
   \includegraphics[width=\columnwidth]{images/ZeroBufStatic}\\\vspace{4ex}
