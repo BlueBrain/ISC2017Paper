@@ -326,8 +326,8 @@ shows the rendering of a MicroCT dataset with an illustration of the selected
 LOD levels.
 
 \begin{figure}[t]
-    \includegraphics[width=.45\columnwidth]{images/livre}\hfill
-    \includegraphics[width=.45\columnwidth]{images/livreLOD}
+    \includegraphics[width=.49\columnwidth]{images/livre}\hfill
+    \includegraphics[width=.49\columnwidth]{images/livreLOD}
   \caption{\label{fLivre}Livre rendering a MicroCT dataset (left) and
     the selected LODs (right)}
 \end{figure}
@@ -343,12 +343,12 @@ flexibility of the plugin approach lead to novel volume rendering use cases,
 where volume representations are created on the fly from different input data
 sets, for example from simulation data.
 
-
+\clearpage
 \section{Messaging and Service Architecture}
 
 \begin{wrapfigure}{r}{.382\textwidth}\center\vspace{-6ex}
   \includegraphics[width=.382\textwidth]{images/ZeroMS}
-  {\caption{\label{fZero}New messaging use cases}}\vspace{-6em}
+  {\caption{\label{fZero}Messaging-enabled use cases}}\vspace{-1em}
 \end{wrapfigure}
 
 All Blue Brain applications integrate messaging libraries which allow them to be
@@ -409,9 +409,10 @@ subscriber.subscribe( camera );
 
 while( rendering )
 {
-    subscriber.receive( 0 /*ms, poll*/ );
-    updateCamera( camera );
-    publisher.publish( camera );
+    if( updateCamera( camera )) // had user event
+        publisher.publish( camera );
+    else // poll subscription
+        subscriber.receive( 0 /*ms*/ );
     renderFrame( camera );
 }
 \end{lstlisting}
