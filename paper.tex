@@ -288,20 +288,19 @@ complexity. Transparency is particularly suitable for masking and highlighting
 features of interest on the circuit. Ongoing work is a more scalable parallel
 rendering algorithm specially suited for transparency. Tiled rendering is also
 possible, which allows very high resolution renderings suitable for printing
-at sizes larger than A0 (The left side of \fig{fRTNeuron} has been rendered at
-36640$\times$26000).
+at sizes larger than A0 (The original of \fig{fRTNeuron} left is a 36640$\times$26000 pixel image).
 
 The core engine is implemented in C++ using Equalizer and OpenSceneGraph and
 leverages part of our messaging framework to allow coupling with other
 applications. The 3D view can be embedded inside Qt applications
-(\fig{fRTNeuron}, right side), in particular in Python with PyQt and QML for
+(\fig{fRTNeuron}, right), in particular in Python with PyQt and QML for
 overlaying GUI elements. Several use case specific applications have been built
 this way.
 
-\begin{figure}[ht]\center
+\begin{figure}[h!t]\center
   \includegraphics[width=.45\columnwidth]{images/rtneuron1.png}\hfil
   \includegraphics[width=.45\columnwidth]{images/rtneuron2.png}
-  \caption{\label{fRTNeuron}Left, membrame potential of a fraction of the neurons in a simulation of neocortical circuit. Right, a circuit visualization application showing a portion of a hippocampus model.}
+  \caption{\label{fRTNeuron}RTNeuron examples: membrame potential of a fraction of the neurons in a simulation (left) and a circuit visualization application showing a portion of a hippocampus model (right).}
 \end{figure}
 
 \subsection{Livre: Out-of-Core Volume Rendering}
@@ -326,7 +325,7 @@ using the screen-space-error (SSE)~\cite{guthe2004} technique. \fig{fLivre}
 shows the rendering of a MicroCT dataset with an illustration of the selected
 LOD levels.
 
-\begin{figure}[h!t]
+\begin{figure}[t]
     \includegraphics[width=.45\columnwidth]{images/livre}\hfill
     \includegraphics[width=.45\columnwidth]{images/livreLOD}
   \caption{\label{fLivre}Livre rendering a MicroCT dataset (left) and
@@ -349,7 +348,7 @@ sets, for example from simulation data.
 
 \begin{wrapfigure}{r}{.382\textwidth}\center\vspace{-6ex}
   \includegraphics[width=.382\textwidth]{images/ZeroMS}
-  {\caption{\label{fZero}New messaging use cases}}\vspace{-2ex}
+  {\caption{\label{fZero}New messaging use cases}}\vspace{-6em}
 \end{wrapfigure}
 
 All Blue Brain applications integrate messaging libraries which allow them to be
