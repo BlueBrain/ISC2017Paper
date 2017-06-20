@@ -263,7 +263,7 @@ right).
 
 \subsection{RTNeuron: OpenGL Parallel Rendering}
 
-RTNeuron\cite{Hernando13} is the oldest of our interactive visualization tools.
+RTNeuron\cite{HBBES:13} is the oldest of our interactive visualization tools.
 Originally conceived as a standalone application for visualizing simulation
 results, it has evolved into a rasterization-based rendering engine library
 implemented in C++ with a Python wrapping. The power of RTNeuron lies in a
@@ -288,13 +288,21 @@ complexity. Transparency is particularly suitable for masking and highlighting
 features of interest on the circuit. Ongoing work is a more scalable parallel
 rendering algorithm specially suited for transparency. Tiled rendering is also
 possible, which allows very high resolution renderings suitable for printing
-at sizes larger than A0.
+at sizes larger than A0 (The left side of \fig{fRTNeuron} has been rendered at
+36640$\times$26000).
 
 The core engine is implemented in C++ using Equalizer and OpenSceneGraph and
 leverages part of our messaging framework to allow coupling with other
-applications. The 3D view can be embedded inside Qt applications, in particular
-in Python with PyQt and QML for overlaying GUI elements. Several use case
-specific applications have been built this way.
+applications. The 3D view can be embedded inside Qt applications
+(\fig{fRTNeuron}, right side), in particular in Python with PyQt and QML for
+overlaying GUI elements. Several use case specific applications have been built
+this way.
+
+\begin{figure}[ht]\center
+  \includegraphics[width=.45\columnwidth]{images/rtneuron1.png}\hfil
+  \includegraphics[width=.45\columnwidth]{images/rtneuron2.png}
+  \caption{\label{fRTNeuron}Left, membrame potential of a fraction of the neurons in a simulation of neocortical circuit. Right, a circuit visualization application showing a portion of a hippocampus model.}
+\end{figure}
 
 \subsection{Livre: Out-of-Core Volume Rendering}
 
