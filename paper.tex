@@ -279,16 +279,16 @@ highly configurable, allowing to apply different color maps to different cell
 subsets.
 
 Neurons can be displayed with different levels of detail ranging from simple
-spheres, cylinder-like geometric models and detailed polygonal
-meshes. Advanced rendering techniques included are several types of parallel
-rendering algorithms (such as sort-first and sort-last) and several algorithms
-for transparency rendering that enable efficient and correct rendering of
-scenes with great geometrical complexity and high depth
-complexity. Transparency is particularly suitable for masking and highlighting
-features of interest on the circuit. Ongoing work is a more scalable parallel
-rendering algorithm specially suited for transparency. Tiled rendering is also
-possible, which allows very high resolution renderings suitable for printing
-at sizes larger than A0 (The original of \fig{fRTNeuron} left is a 36640$\times$26000 pixel image).
+spheres, cylinder-like geometric models and detailed polygonal meshes. Advanced
+rendering techniques included are several types of parallel rendering algorithms
+(such as sort-first and sort-last) and several algorithms for transparency
+rendering that enable efficient and correct rendering of scenes with great
+geometrical complexity and high depth complexity. Transparency is particularly
+suitable for masking and highlighting features of interest on the circuit.
+Ongoing work is a more scalable parallel rendering algorithm specially suited
+for transparency. Tiled rendering is also possible, which allows very high
+resolution renderings suitable for printing at sizes larger than A0 (the
+original of \fig{fRTNeuron} left is a 36640$\times$26000 pixel image).
 
 The core engine is implemented in C++ using Equalizer and OpenSceneGraph and
 leverages part of our messaging framework to allow coupling with other
@@ -298,9 +298,9 @@ overlaying GUI elements. Several use case specific applications have been built
 this way.
 
 \begin{figure}[h!t]\center
-  \includegraphics[width=.45\columnwidth]{images/rtneuron1.png}\hfil
-  \includegraphics[width=.45\columnwidth]{images/rtneuron2.png}
-  \caption{\label{fRTNeuron}RTNeuron examples: membrame potential of a fraction of the neurons in a simulation (left) and a circuit visualization application showing a portion of a hippocampus model (right).}
+  \includegraphics[width=.49\columnwidth]{images/rtneuron1.png}\hfil
+  \includegraphics[width=.49\columnwidth]{images/rtneuron2.png}
+  \caption{\label{fRTNeuron}RTNeuron rendering the simulated membrame potential of a fraction of the simulation~(left) and a circuit visualization application for hippocampus model validation~(right)}
 \end{figure}
 
 \subsection{Livre: Out-of-Core Volume Rendering}
