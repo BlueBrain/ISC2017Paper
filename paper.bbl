@@ -1,0 +1,105 @@
+\begin{thebibliography}{10}
+
+\bibitem{tide}
+{Blue Brain Project}.
+\newblock {Tide: Tiled Interactive Display Environment}.
+\newblock https://github.com/BlueBrain/Tide, 2016.
+
+\bibitem{brayns}
+{Blue Brain Project}.
+\newblock {Brayns: Interactive raytracing of neuroscience data}.
+\newblock https://github.com/BlueBrain/Brayns, 2017.
+
+\bibitem{Sage}
+T.~A. DeFanti, J.~Leigh, L.~Renambot, B.~Jeong, A.~Verlo, L.~Long, M.~Brown,
+  D.~J. Sandin, V.~Vishwanath, Q.~Liu, M.~J. Katz, P.~Papadopoulos, J.~P.
+  Keefe, G.~R. Hidley, G.~L. Dawe, I.~Kaufman, B.~Glogowski, K.-U. Doerr,
+  R.~Singh, J.~Girado, J.~P. Schulze, F.~Kuester, and L.~Smarr.
+\newblock The optiportal, a scalable visualization, storage, and computing
+  interface device for the optiputer.
+\newblock {\em Future Gener. Comput. Syst.}, 25(2):114--123, Feb. 2009.
+
+\bibitem{DK:11}
+K.-U. Doerr and F.~Kuester.
+\newblock {CGLX}: A scalable, high-performance visualization framework for
+  networked display environments.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  17(2):320--332, March 2011.
+
+\bibitem{EMP:09}
+S.~Eilemann, M.~Makhinya, and R.~Pajarola.
+\newblock Equalizer: A scalable parallel rendering framework.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  15(3):436--452, May/June 2009.
+
+\bibitem{Omegalib}
+A.~Febretti, A.~Nishimoto, V.~Mateevitsi, L.~Renambot, A.~Johnson, and
+  J.~Leigh.
+\newblock {Omegalib: A multi-view application framework for hybrid reality
+  display environments}.
+\newblock In {\em 2014 IEEE Virtual Reality (VR)}, pages 9--14, March 2014.
+
+\bibitem{flatbuffers}
+{Google, Inc}.
+\newblock {Cross Platform Serialization Library}.
+\newblock http://google.github.io/flatbuffers/, 2017.
+
+\bibitem{cppnetlib}
+D.~M. B. G.~M. {Google, Inc}.
+\newblock {The C++ Network Library Project}.
+\newblock http://cpp-netlib.org/, 2017.
+
+\bibitem{guthe2004}
+S.~Guthe and W.~Strasser.
+\newblock Advanced techniques for high-quality multi-resolution volume
+  rendering.
+\newblock {\em Computers \& Graphics}, 28(1):51--58, 2004.
+
+\bibitem{HBBES:13}
+J.~B. Hernando, J.~Biddiscombe, B.~Bohara, S.~Eilemann, and F.~Sch\"{u}rmann.
+\newblock {Practical Parallel Rendering of Detailed Neuron Simulations}.
+\newblock In {\em Proceedings of the 13th Eurographics Symposium on Parallel
+  Graphics and Visualization}, EGPGV, pages 49--56, Aire-la-Ville, Switzerland,
+  Switzerland, 2013. Eurographics Association.
+
+\bibitem{JLMV:06}
+A.~Johnson, J.~Leigh, P.~Morin, and P.~Van~Keken.
+\newblock {GeoWall}: Stereoscopic visualization for geoscience research and
+  education.
+\newblock {\em IEEE Computer Graphics and Applications}, 26(6):10--14,
+  November-December 2006.
+
+\bibitem{DisplayCluster}
+G.~P. Johnson, G.~D. Abram, B.~Westing, P.~Navr'til, and K.~Gaither.
+\newblock {DisplayCluster: An Interactive Visualization Environment for Tiled
+  Displays}.
+\newblock In {\em 2012 IEEE International Conference on Cluster Computing},
+  pages 239--247, Sept 2012.
+
+\bibitem{jsonschema}
+{JSON Schema}.
+\newblock {JSON Schema}.
+\newblock http://json-schema.org/, 2017.
+
+\bibitem{Sage2}
+T.~Marrinan, J.~Aurisano, A.~Nishimoto, K.~Bharadwaj, V.~Mateevitsi,
+  L.~Renambot, L.~Long, A.~Johnson, and J.~Leigh.
+\newblock {SAGE2: A new approach for data intensive collaboration using
+  Scalable Resolution Shared Displays}.
+\newblock In {\em Collaborative Computing: Networking, Applications and
+  Worksharing}, pages 177--186, 2014.
+
+\bibitem{optix}
+S.~G. Parker, J.~Bigler, A.~Dietrich, H.~Friedrich, J.~Hoberock, D.~Luebke,
+  D.~McAllister, M.~McGuire, K.~Morley, A.~Robison, and M.~Stich.
+\newblock {OptiX: A General Purpose Ray Tracing Engine}.
+\newblock {\em ACM Transactions on Graphics}, August 2010.
+
+\bibitem{ospray}
+I.~Wald, G.~Johnson, J.~Amstutz, C.~Brownlee, A.~Knoll, J.~Jeffers,
+  J.~Günther, and P.~Navratil.
+\newblock {OSPRay - A CPU Ray Tracing Framework for Scientific Visualization}.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  23(1):931--940, Jan 2017.
+
+\end{thebibliography}
